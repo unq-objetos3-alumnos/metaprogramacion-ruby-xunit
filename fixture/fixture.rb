@@ -1,4 +1,8 @@
+require_relative '../xunit/assertions'
+
 class TestLogicaSuite
+
+  include Assertions
 
   def test_verdadero_es_verdadero
     assert_true true
@@ -15,6 +19,8 @@ class TestLogicaSuite
 end
 
 class TestAndaTodoSuite
+  include Assertions
+
   def test_resta_correcta
     assert_equals 2, 3-1
   end
@@ -25,18 +31,24 @@ class TestAndaTodoSuite
 end
 
 class TestFallaDivisionSuite
+  include Assertions
+
   def test_falla_division
     assert_true 3/0
   end
 end
 
 class TestFallaTestSuite
+  include Assertions
+
   def test_falla_suma
     assert_equals 3, (2+2)
   end
 end
 
 class TestCombinadoSuite
+  include Assertions
+
   def test_falso_es_falso
     assert_false false
   end
@@ -51,6 +63,7 @@ class TestCombinadoSuite
 end
 
 class TestConBefore
+  include Assertions
 
   attr_accessor :numero
 
@@ -67,18 +80,5 @@ class TestConBefore
   def test_assert_suma
     self.assert_equals self.numero, 1+1+1
   end
-
-end
-
-class TestSuma
-
-  def parametros
-      [{x: 1, y:2}, {x:2 , y:5}]
-  end
-
-  def param_test_suma_conmutativa
-    assert_equals y+x, x+y
-  end
-
 
 end

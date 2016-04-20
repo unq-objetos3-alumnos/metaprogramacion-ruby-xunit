@@ -1,6 +1,6 @@
 module Assertions
-  def assert_true(value)
-    unless (value == true)
+  def assert_true(is_true)
+    unless is_true
       raise AssertionException
     end
   end

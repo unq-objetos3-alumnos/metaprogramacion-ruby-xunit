@@ -7,6 +7,14 @@ class BaseReporter
     self.reset
   end
 
+  def run_and_report(&suite)
+    self.start_timer
+    result = suite.call
+    self.end_timer
+    self.report result
+    result
+  end
+
   def reset
     self.registered_reports = []
   end
@@ -61,12 +69,12 @@ class BaseReporter
     self.registered_reports.select { |report| report.failure? }
   end
 
-  def reportar(resultado_suite)
-    resultado_suite.resultados.each do |resultado|
-      type = resultado.class.to_s
-      type.slice! 'Resultado'
-      tipo_resultado = type.downcase.to_sym
-      self.send tipo_resultado, resultado
+  def report(result_suite)
+    result_suite.results.each do |result|
+      type = result.class.to_s
+      type.slice! 'Result'
+      result_type = type.downcase.to_sym
+      self.send result_type, result
     end
     self.report_assertions
   end
