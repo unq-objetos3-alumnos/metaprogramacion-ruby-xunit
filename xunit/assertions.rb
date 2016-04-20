@@ -1,4 +1,5 @@
 module Assertions
+
   def assert_true(is_true)
     unless is_true
       raise AssertionException
@@ -12,4 +13,5 @@ module Assertions
   def assert_equals(expected, value)
     self.assert_true (expected == value)
   end
+
 end

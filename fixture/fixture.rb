@@ -2,8 +2,6 @@ require_relative '../xunit/assertions'
 
 class TestLogicaSuite
 
-  include Assertions
-
   def test_verdadero_es_verdadero
     assert_true true
   end
@@ -19,7 +17,6 @@ class TestLogicaSuite
 end
 
 class TestAndaTodoSuite
-  include Assertions
 
   def test_resta_correcta
     assert_equals 2, 3-1
@@ -28,26 +25,26 @@ class TestAndaTodoSuite
   def test_verdadero_es_verdadero
     assert_true true
   end
+
 end
 
 class TestFallaDivisionSuite
-  include Assertions
 
   def test_falla_division
     assert_true 3/0
   end
+
 end
 
 class TestFallaTestSuite
-  include Assertions
 
   def test_falla_suma
     assert_equals 3, (2+2)
   end
+
 end
 
 class TestCombinadoSuite
-  include Assertions
 
   def test_falso_es_falso
     assert_false false
@@ -60,10 +57,10 @@ class TestCombinadoSuite
   def test_error_division
     assert_true 3/0
   end
+
 end
 
 class TestConBefore
-  include Assertions
 
   attr_accessor :numero
 
