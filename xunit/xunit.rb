@@ -3,6 +3,14 @@ require_relative 'assertions'
 
 class XUnitRunner
 
+  def self.with_reporter(reporter)
+    runner = XUnitRunner.new
+    runner.reporter= reporter
+    runner
+  end
+
+  attr_accessor :reporter
+
   def run_all_tests(test_suite)
     ResultSuite.new (
          test_suite.instance_methods
@@ -36,7 +44,7 @@ class XUnitRunner
   end
   
   def run_all_and_report(test_suite)
-    ConsoleReporter.new.run_and_report {
+    reporter.new.run_and_report {
       self.run_all_tests test_suite
     }
   end
@@ -95,7 +103,7 @@ class Result
     false
   end
 
-  def report
+  def message
   end
 end
 
@@ -112,8 +120,9 @@ class ResultFailure < Result
     true
   end
 
-  def report
-    puts "Failure on test #{self.signature}: #{self.exception.message}".colorize(:color => :light_yellow, :background => :black)
+  def message
+    "Failure on test #{self.signature}: #{self.exception.message} \n"
+        .colorize(:color => :light_yellow, :background => :black)
   end
 end
 
@@ -122,10 +131,9 @@ class ResultError < Result
     true
   end
 
-  def report
-    puts "Error on test #{self.signature}: #{self.exception.message}".colorize(:color => :red, :background => :black)
-    puts self.exception.backtrace.join("\n").colorize(:color => :red, :background => :black)
-    puts "\n"
+  def message
+    "Error on test #{self.signature}: #{self.exception.message} \n #{self.exception.backtrace.join("\n")} \n"
+      .colorize(:color => :red, :background => :black)
   end
 end
 

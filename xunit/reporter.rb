@@ -35,22 +35,8 @@ class BaseReporter
     self.registered_reports << result
   end
 
-  def failure(result)
-    self.add_result result
-  end
-
-  def success(result)
-    self.add_result result
-  end
-
-  def error(result)
-    self.add_result result
-  end
-
   def report_assertions
-    self.registered_reports.each do |result|
-      result.report
-    end
+
   end
 
   def get_total_reports
@@ -70,12 +56,7 @@ class BaseReporter
   end
 
   def report(result_suite)
-    result_suite.results.each do |result|
-      type = result.class.to_s
-      type.slice! 'Result'
-      result_type = type.downcase.to_sym
-      self.send result_type, result
-    end
+    self.registered_reports.push(*result_suite.results)
     self.report_assertions
   end
 
@@ -84,7 +65,10 @@ end
 class ConsoleReporter < BaseReporter
 
   def report_assertions
-    super
+    self.registered_reports.each do |result|
+      puts result.message
+    end
+
     puts "#{self.get_total_reports} tests,#{self.get_successful_reports.length} tests ran ok, #{self.get_failure_reports.length} failures,#{self.get_error_reports.length} errors.".
              colorize(:color => :blue, :background => :black)
     puts "Finished tests in #{(self.end_time - self.beginning_time)*1000} milliseconds".colorize(:color => :cyan, :background => :black)
@@ -92,3 +76,4 @@ class ConsoleReporter < BaseReporter
   end
 
 end
+

@@ -4,6 +4,11 @@ require_relative '../xunit/xunit'
 
 describe 'tests de xunit' do
 
+  class DummyReporter < BaseReporter
+    def report_assertions
+    end
+  end
+
   it 'Ejecutar solo un test verdadero es verdadero' do
     runner = XUnitRunner.new
     resultado = runner.run_test(TestLogicaSuite,
@@ -56,8 +61,7 @@ describe 'tests de xunit' do
   end
 
   it 'Ejecutar todos los tests de una clase que falla y reportar' do
-    runner = XUnitRunner.new
-    resultado = runner.run_all_and_report(TestFallaTestSuite)
+    resultado = XUnitRunner.with_reporter(DummyReporter).run_all_and_report(TestFallaTestSuite)
     expect(resultado.all_passed?).to be(false)
     expect(resultado.failed_tests).to eq([:test_falla_suma])
     expect(resultado.erred_tests).to eq([])
@@ -65,15 +69,13 @@ describe 'tests de xunit' do
 
   it 'Ejecutar clase con before' do
     runner = XUnitRunner.new
-
     resultado = runner.run_all_tests(TestConBefore)
     expect(resultado.erred_tests.size).to eq(0)
     expect(resultado.all_passed?).to eq(true)
   end
 
   it 'Ejecutar clase combinada con reporter' do
-    runner = XUnitRunner.new
-    resultado = runner.run_all_and_report(TestCombinadoSuite)
+    resultado = XUnitRunner.with_reporter(DummyReporter).run_all_and_report(TestCombinadoSuite)
     expect(resultado.erred_tests.size).to eq(1)
     expect(resultado.all_passed?).to eq(false)
   end
